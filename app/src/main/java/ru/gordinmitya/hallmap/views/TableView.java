@@ -12,6 +12,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,6 +63,16 @@ public class TableView extends FrameLayout {
 
     void createBackgroundView(Context context) {
         backgroundView = new View(context);
+
+        backgroundView.setLayoutParams(getLayoutParamsForBackground());
+        backgroundView.setRotation(table.angle);
+
+        backgroundView.setBackground(getSelectableItemBackground(context));
+        backgroundView.setClickable(true);
+        this.addView(backgroundView);
+    }
+
+    private LayoutParams getLayoutParamsForBackground() {
         LayoutParams layoutParams = new LayoutParams(
                 (int) (table.width * scale),
                 (int) (table.height * scale),
@@ -72,16 +83,13 @@ public class TableView extends FrameLayout {
                     (table.width / 2.0 * Math.sin(angle) + table.height / 2.0 * (Math.cos(angle) - 1)) * scale
             );
             int horizontalMargin = (int) (
-                    -1 * (table.width / 2.0 * (1 - Math.cos(angle)) - table.height / 2.0 * Math.sin(angle)) * scale
+                    (table.width / 2.0 * (1 - Math.cos(angle)) - table.height / 2.0 * Math.sin(angle)) * scale
             );
+            verticalMargin = Math.abs(verticalMargin);
+            horizontalMargin = Math.abs(horizontalMargin);
             layoutParams.setMargins(horizontalMargin, verticalMargin, horizontalMargin, verticalMargin);
         }
-        backgroundView.setLayoutParams(layoutParams);
-        backgroundView.setRotation(table.angle);
-
-        backgroundView.setBackground(getSelectableItemBackground(context));
-        backgroundView.setClickable(true);
-        this.addView(backgroundView);
+        return layoutParams;
     }
 
     private Drawable getSelectableItemBackground(Context context) {
@@ -115,5 +123,12 @@ public class TableView extends FrameLayout {
 
     public void setScale(double scale) {
         this.scale = scale;
+        backgroundView.setLayoutParams(getLayoutParamsForBackground());
+        this.post(new Runnable() {
+            @Override
+            public void run() {
+                requestLayout();
+            }
+        });
     }
 }
