@@ -1,25 +1,21 @@
 package ru.gordinmitya.hallmap.views;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.graphics.drawable.shapes.Shape;
-import android.os.Build;
-import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.Arrays;
 
@@ -28,6 +24,10 @@ import ru.gordinmitya.hallmap.models.Table;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+
+// По идее нужно создавать 3 конструктора,
+// но так как этот класс создается только в коде,
+// в данном случае это не нужно
 public class TableView extends FrameLayout {
     public final Table table;
     private double scale;
